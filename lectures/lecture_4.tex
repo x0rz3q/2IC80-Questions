@@ -1,0 +1,30 @@
+\section{Session/Presentation/Application layers}
+\paragraph{What is DNS?}
+DNS stands for Domain Name Service, it is a hierarchical system for domain name resolving. It translates human-readable addresses (duckduckgo.com) to (a set of) IP addresses the domain is reachable at. IT operatest on port 53.
+
+\paragraph{What is DNS cache poisoning?}
+The first received answer is cached. Any subsequent answer with the same transaction ID is ignored. Attackers only have to win the race to poison the DNS cache.
+
+\paragraph{What is the kaminsky vulnerability?}
+The kaminsky vulnerability can lead to a cache poisoning attack. The attacker focussing on replacing an NS record rather than an A record. This way the attacker can get control over any (sub)domain.
+
+\paragraph{How do you mitigate the kaminsky vulnerability?}
+The source of the attack is based on the low entropy that a 16 bit ID has. The randomness is not enough to represent a significant margin. However, moving to a ID size of 32 bits is not feasible because then you need to change the entire protocol. The solution is to randomise the source port, which is also 16 bits, to increase entropy. Any answer that does not match both source port \& transaction ID will be dropped.
+
+\paragraph{What is DNSSec?}
+DNSSec is a secure implementation of the DNS protocol. It implements DNS authentication on top of normal DNS exchange. Digitally signed over a chain-of-trust starting from the root server. DNSSec protects data integrity, however confidentiality is not protected.
+
+\paragraph{What is a DNS amplification attack?}
+A DNS amplification attack is a type of DoS attack. It exploits certain type of DNS answers that are much bigger in size than the request. Attack's throughput will be much bigger than attacker's input. Keep in mind, DNS works over UDP so the source IP is easily spoofed.
+
+\paragraph{Explain the NTP amplification attack}
+The NTP amplification attack was based on the fact that the response was much larger than the input. The NTP protocol has a command for diagnostic purposes, called "monlist" It returns addresses of the last (at most) 600 clients contacted by the NTP server. This way, the attack could be heavily amplified.
+
+\paragraph{What is SSLStrip?}
+SSLstrip is a technique to take advantage of the bridging between an HTTP and HTTP connection. MiTM exploits the first unencrypted channel to literally "strip off" all HTTPs requests from the client. The upside of this attack is that the server does not notice anything strange, it also gives minimal visible impact on the client side. On the downside, it only works if HTTP to HTTPs bridging operation happens at $t_0$. Client may also notice the absence of a lock icon in the browser, we can mitigate this by forging a certificate and encrypt the channel with the client as well.
+
+\paragraph{What is HSTS?}
+HSTS stands for HTTP Strict Transport Security. The server declares that all conversations with it can only be operated over HTTPS. The browser then automatically switches everything to https. Attackers can still strip the header, but the browser remembers previous statements. This means that stripping will work, but only on the very first interaction with the server. Modern browsers also have lists of popular HSTS servers hardcoded.
+
+\paragraph{What is HPKP?}
+HPKP stands for HTTP Public Key Pinning. Servers can advertise hashed lists of public keys that are attached to their certificate. Browsers then compare these with those it receives in the HTTP Response. It is however, only effective after the first access.
