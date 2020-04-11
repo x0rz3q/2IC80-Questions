@@ -1,0 +1,26 @@
+\section{Data Link and Network layers}
+\paragraph{What is a MAC address?}
+MAC stands for Media Access Control, it is a unique identity for a network interface. 
+
+\paragraph{What does IP provide?}
+IP provides a structured way to abstract host addresses away from their physical attributes. It makes it possible to efficiently talk between systems in different networks.
+
+\paragraph{What is the ARP protocol?}
+ARP stands for address resolution protocol. It allows systems to associate an IP address to a MAC address. It also allows discovery through broadcast. ARP tables contain information to translate IP addresses into MAC addresses.
+
+All addresses in an ARP table are added by one of the two mechanisms. Namely, ARP request-reply or gratuitous ARP. In general the idea is that the system with the requested IP replies back with its correct mac address.
+
+\paragraph{What is ARP poisoning? Why is it possible?}
+ARP answers or Gratuitous ARP frames do not require an additional answer/confirmation, it is a declarative protocol. Moreover, nodes are not authenticated. This means that C can tell B "D is at C" and C can tell D "B is at C". As a result, every communication between B and D will pass by C.  
+
+\paragraph{What are the limitations of the ARP poisoning attack?}
+The ARP poisoning only works on local networks, where MAC addresses are actually meaningful. The poisoning only works because systems are not authenticated, however some implementations/third party tools can mitigate the problem by checking for anomalies.
+
+\paragraph{What is a Denial of Service (DOS)?}
+Denial of service is a type of attack that aims at congesting or overpowering a system's capacity by generating requests the system will have to answer. It can affect the performance of the attacked system or its channels, it can also lead to a system crash due to resource consumption.
+
+\paragraph{What is a Ping Flood?}
+A can exploit its wider bandwidth to B with ICMP echo requests. B's bandwidth gets exhausted with A's requests and B's replies. B can no longer operate on its network channel.
+
+\paragraph{What is a ping of death?}
+ICMP packets are typically 64 bytes in size, including the IP headers and data. However, IP datagrams can extend up to 65535 bytes, the data length field is 16 bits. Early implementations of internet modules were strictly implementing the RFC directives, without handeling exceptions properly. The ping of death used this fact, it generates a large ICMP packet. Fragments it into 1024 IP packets of 64 bytes each. The destination receives a regular packet, IP module composes fragments. Then the ICMP module tries to read datagram bigger than assigned buffer size, which results in a crash.
