@@ -1,0 +1,43 @@
+\section{Network reconnaissance and mapping}
+\paragraph{What is a classic example of a bad attack?}
+A bad attack is where you throw everything you have at the target(s). It is also called a "Hail Mary" attack. If you have enough attack power you will eventually find a matching attack. It is a very very bad idea, I mean very very very bad. Too many attacks implies that you will have a very high visibility. The goal of the attack is never to get noticed, not even for a denial of service attack.
+
+\paragraph{What is a classic example of a good attack?}
+A good attack first figures out how the network or system looks like. Which systems can you reach from your current location? What are the configurations of these systems? Which systems are more likely to function as a "bridge" to the rest of the network? Then, cherry pick the attacks you think are going to be the most successful.
+
+\paragraph{What does a good definer do?}
+A good definer will regularly perform system and network hardening to minimise the attack surface, it will test for working exploits and deploy network \& system deferences. They will apply the golden rule of defensive techniques, namely minimality principle. No user and no system component or process should be authorised to perform actions that are not strictly necessary for their normal operation. They will also implement network segmentation. This means that sensitive information can not directly be reached from public, unauthenticated positions. They will implement a network topology such that different functionalities are isolated from the rest.
+
+\paragraph{What is a firewall?}
+Firewalls are perimetric network components that filter incoming and outgoing traffic from and to the network. It is positioned such that all relevant traffic passes through them before entering/leaving the network. A set of rules define which traffic is allowed and which is not allowed.
+
+\paragraph{What are the two policies of firewalls?}
+Default permit: Allow everything EXCEPT what is defined the rules.
+
+Default deny: Deny everything EXCEPT what is defined in the rules.
+
+\paragraph{What firewall types are there?}
+Stateless: Only looks at a single packet, e.g. the TCP flags, and has no history.
+
+Stateful: Consider pre-existing states, e.g. SYN\_RECEIVED, ESTABLISHED) to admit meaningful packets.
+
+Application firewalls: Deep packet inspection, evaluate L7 functionalities of protocol.
+
+\paragraph{What is an IDS?}
+IDS stands for intrusion detection system, it monitors incoming connections based on signatures and anomalies. We have two IDs systems, namely host IDS and network IDS. A host IDS is deployed on the host system, it monitors syscalls, system file hashing and system states. A Network IDS is deployed on the network. It does protocol analysis, it works similar to an application proxy. It is also the first that will fire an alarm.
+
+On top of that, IDs, esp in large networks, generate many events. In the order of hundreds of thousands per day. Most of these events are false positives, it makes little sense when looked at on their own.
+
+\paragraph{How do you evade NIDS?}
+Evasion of signature-based detection can be fairly trivial, it will depend on the implementation of the actual signature. More advanced techniques are typically based on network features. All techniques common goal: NIDS sees different packet than client, the different ways are due to: TTL, fragmentation and timeouts.
+
+The NIDS has a lower reassembly timeout than the receiving client. Which means, that fragment one can be delivered before fragment two is delivered. This way, the NIDS never sees the full picture.
+
+The NIDS has a higher reassembly timeout than the receiving client. Which means, that fragment assembly can be deceived on the NIDS to trick it.
+
+The router drops packet analysed by NIDS that will not be delivered to the victim. This happens due to the fact that the TTL is set accordingly, this way packets can be dropped and a new assembly can be created on the victim.
+
+Another thing to keep in mind is that some systems replace fragments with newer ones, other keep old fragments instead of the new one.
+
+\paragraph{What does good network segmentation allow?}
+It allows for better management of firewall rules, higher control on the incoming traffic, higher overall security and lower load on single appliances. 
