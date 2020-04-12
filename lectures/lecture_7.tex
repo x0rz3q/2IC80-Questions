@@ -1,0 +1,13 @@
+\section{Vulnerability and Exploit Ecosystem}
+\paragraph{What is fuzzing?}
+Fuzzing is a systematic way to find defects in code. Fuzzing can only find problems in the code (bugs). These bugs are not necessarily vulnerabilities. Follow-up investigation is required to find the root cause and possible exploitation if there is any.
+
+All fuzzers act on the part of the code that crosses the trust boundary of that application, that is the point where the input passes from an untrusted source to being trusted by the application.
+
+Fuzzing can be focussed on a primary or secondary target. A primary target can generate issues on the data structures. A secondary target is typically due to misaligned assumptions on initial parsing/validation vs data usage.
+
+There are three types of fuzzers, namely: Dumb/Random, Mutation based and Grammer/Model based. In the case of the dumb one, there is no specific input structure it just mindlessly generates random strings, this is mostly good enough for simple functions/programs. It is very easy to implement but it is very unlikely to detect serious bugs in complex logics.
+
+The mutation based fuzzer is based on existent valid data. The idea is to mutate specific input fields to certain test values, it scales very well to multiple software and it is fairly easy to implement. However, a high number of valid inputs is needed for efficiency.
+
+The grammar/model based fuzzer is based on a defined grammer/model of expected input/tested software, it tests against mutations of expected input/transitions. Grammar based improves the efficiency on the mutation, model based can be efficient. Both model and grammar based require extra setup. The model based can be inefficient if it is not correctly modeled.
