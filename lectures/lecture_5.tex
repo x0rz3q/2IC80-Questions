@@ -40,4 +40,45 @@ The router drops packet analysed by NIDS that will not be delivered to the victi
 Another thing to keep in mind is that some systems replace fragments with newer ones, other keep old fragments instead of the new one.
 
 \paragraph{What does good network segmentation allow?}
-It allows for better management of firewall rules, higher control on the incoming traffic, higher overall security and lower load on single appliances. 
+It allows for better management of firewall rules, higher control on the incoming traffic, higher overall security and lower load on single appliances.
+
+\paragraph{What is a DNS zone transfer?}
+A zone is a domain for which a server is authoritative. A slave server can ask a master (authoritative) server to copy their zone database. An attack then pretends to be a slave server and dumps the zone DB. This way the attacker acquires knowledge of the zone's infrastructure. It can be used to facilitate further attacks.
+
+\paragraph{What port states are there?}
+Open: An active server is listening to that port and will accept incoming connections.
+
+Closed: No service is listening to the port, but the port responds to probes. It may be an index of misconfiguration, check back later to see if it goes to open.
+
+Filtered: Cannot tell if open as probes don't get to the port. It may be an index of firewalling or other network filters between the host and the victim.
+
+Unfiltered: Only know that it can be reached, but don't know if open or closed (ACK scan)
+
+Open|Filtered: Does not know if open OR filtered, as the port does not provide any answer.
+
+Closed|Filtered: same.
+
+\paragraph{What is a SYN scan?}
+The attacker forges TCP packets with the SYN flag up. It is useful to measure whether the remote system is accepting incoming connections on port x.
+
+There is also a Half-open SYN scan. This means that the attacker will send an RST back after the server's SYNC ACK. This way, the 3-way handshake is never finished and control is not passed to the application layer.
+
+\paragraph{What is an ACK scan?}
+The attacker forges TCP packets with only the ACK flag up. It is useful to distinguish between stateful and stateless firewalls. A stateless firewall will let the packet go through even if there is no existing connections, the port needs to be open for this. A stateful firewall will drop the ACK packet if it is not associated with a SYN\_RECEIVED state. Therefore, we can conclude that the port is unfiltered when we receive an RST packet back. No response or specific ICMP message means that it is filtered.
+
+\paragraph{What is an IDLE scan?}
+An IDLE scan is useful to remain complete stealthy. It focusses on inferring the state of a remote port by looking at the state of a ZOMBIE machine. A zombie machine is a most-ly silent already existing system in the network. With an IDLE scan we can only see if a port is open, or if it is not, but we cannot distinguish between closed or filtered. We can also not get any OS fingerprinting information because we only have the IP state of the zombie machine to look at.
+
+To see if a port is open or closed/filtered we do the following procedure:
+
+First, the attacker needs to figure out the IP ID of the zombie. The attacker sends a SYN/ACK to a zombie. The zombie, which is not expecting a SYN/ACK sends back a RST disclosing its IP AD.
+
+The next step is to forge a SYN packet from the zombie. The target sends a SYN/ACK in response to the SYN that appears to come from the zombie. The zombie, not expecting it, sends back a RST, incrementing its IP ID in the process. 
+
+The third step is to probe the zombie's IP ID again. If it has increased by 2 then we know that the port is open. In case the IP ID has increased by 1, then we know that the port is either closed or filtered. We know this because the zombie will receive an RST from the target if the port is not open. Hence, not responding back. If the port would be open the zombie would send an RST to the target, as response to the SYN/ACK it receives from the target.
+
+\paragraph{What is a FIN scan?} Set only the FIN flag.
+\paragraph{What is a NULL scan?} Set all flags to 0
+\paragraph{What is a XMAS scan?} Set the FIN, URG and PSH flag to one.
+\paragraph{How does host fingerprinting work?}
+Not all operating systems implement the RFC as stated. Moreover, this gives us the possibility to infer which operating system is on the other side on the basis of the received answer.
