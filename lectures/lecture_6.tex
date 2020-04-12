@@ -1,0 +1,77 @@
+\section{Software vulnerabilities}
+\paragraph{What is a bug?}
+A bug is a problem in the execution of the software that leads to unexpected behaviour. Like, a software crash.
+
+The characteristics of a bug are:
+\begin{itemize}
+	\item Replicability
+	\item Logic/configuration/design/implementation
+	\item Fix priority
+	\item If it's documented, it's a feature
+\end{itemize}
+
+\paragraph{What is a vulnerability?}
+A flaw or weakness in system security procedures, design implementation, or internal controls that could be exercised (accidentally triggered or intentionally exploited) and result in a security breach or a violation of the system's security policy. Vulnerabilities can be found at any level in an information system. Namely, configuration vulnerabilities, infrastructural vulnerabilities and software vulnerabilities.
+
+A configuration vulnerability is when a software or system configuration does not correctly implement a security policy. For example, accept SSH root connections from any IP.
+
+Infrastructural vulnerabilities can be design or implementation problems that directly or indirectly affect the security of a system. For example, a sensitive database in a network's DMZ.
+
+Software vulnerabilities can be design or implementation of a software module that can be exploited to bypass a security policy. For example, a authorisation mechanism that can be bypassed.
+
+\paragraph{What are the common sources of vulnerabilities?}
+Code injection/input validation: Attacker can pass "code" in input to a program that is then executed. For example, XSS, which is JS code input in a webapp that is eventually executed by a browser.
+
+Memory errors: memory access, writing, leaks, can be caused by input validation vulnerabilities. May lead to code execution by redirecting execution flow to injected code.
+
+Privilege errors: Allow an attacker to execute instructions with higher/incorrect privileges.
+
+Information leak/side channels: Side channels, information leakage e.g. from memory or a faulty crypto implementation.
+
+Physical access: local authentication issues, UI problems.
+
+\paragraph{What are the two main discovery techniques?}
+The first is code lookups, manual/semi-automatic search in the codebase for known patterns.
+
+The second one is fuzzing, it is semi-automatic random input generation to try to crash the program.
+
+There is a bonus technique, and that is "google hacking". Basically look for known vulnerable functions in google, which returns vulnerable webpages.
+
+\paragraph{What is a privilege escalation vulnerability?}
+A privilege escalation vulnerability is typically triggered by a high privilege application that can be tricked in executing commands on behalf of the user. This may require some initial level of privilege (even by impersonation). It is either horizontal or vertical. Horizontal in this sense means to impersonate a different user at the same privilege level as the attacker. Vertical in this sense means to escalate to higher (admin) level. It is also either direct or mediated. Direct in this sense means that the attack is directly focussed on the vulnerable application. Mediated means that it will pass the attack through an external service that interfaces with the vulnerable application.
+
+\paragraph{What is shellshock?}
+Shellshock is a vulnerability in GNU Bash. The vulnerability exists up to version 4.3. It is based on the fact that it could interpret values of environment variables passed to the shell as commands to execute. This may result in the execution of any command on behalf of the attacker.
+
+\paragraph{What is an information disclosure vulnerability?}
+Information disclosure vulnerabilities can also be known as side-channel vulnerabilities. It allows for the disclosure/leak of (sensitive) information from memory. It is usually exploits some program that has regular access to it by tricking the program in returning to the user values that directly disclose bits of interest, or indirectly disclose bits of interest.
+
+\paragraph{What is heartbleed?}
+Hearthbleed is a vulnerability in TLS/DTLS in OpenSSL. The attacker can send a malformed packet with specific request. The malformed packet would have a small payload but a large declared size. The server will read unallocated memory outside of the data field and return it to the attacker, up to 64 kB / time. The access to the memory may disclose sensitive information on OpenSSL.
+
+\paragraph{What is path traversal vulnerability?}
+A path traversal vulnerability allows access to resources normally out of the scope, especially on web servers. A necessary condition is a request parameter that contains the name of a file or of a directory. A typical attack would inject as many "../" as would seem necessary. Most OSs canonify strings, which means you can add as many as you want. This way, you do not need to figure out the current working directory.
+
+It is easy to see if a parameter might be vulnerable to a path traversal attack. Just add a "bar/../" to it, if this still works then it might be vulnerable. In general Windows supports forward and backward slashes, unix however only accepts forward. Some web applications may only be accepting one and not the other, it is good to try both.
+
+In case it sanitises by removing traversal traversal sequences non-recursively, then you can use "....//" instead of "../". If it checks the file suffix, then you can try inserting a null-byte "\%00", or even a newline. Sometimes the application checks that the path starts with a given directory. Hence, you can try "directory/../../../../etc/passwd".
+
+\paragraph{Explain file inclusion}
+It is a similar technique as the path traversal vulnerability. It allows for inclusion of files and functions. A scripting language includes an executable external file. There are two flavours, namely local and remote inclusion. For example: the location transmitted via a request parameter. If you then insert a URL as the parameter it will fetch it and include it.
+
+\paragraph{What are the 3 buffer overflow variants?}
+The first one is return-to-libc, instead of writing your code to execute you call a function that will do it for you. 
+
+The second one is exec-before-return. Instead of writing the RET (which pops on the stack when context is switched) overwrite other parameters. This requires more-in-depth analysis of assembly code.
+
+The third one is forge frame, you can forge a fake stack frame in the buffer. Modify EBP such that it will point somewhere in the buffer as if it was a stack frame, off by one buffer overflows. Put your code on that location.
+
+\paragraph{What kind of defences do modern operating systems have against buffer overflows?}
+The first one is data execution protection (DEP). It requires HW support from the CPU, namely the NX bit. Previous attacks executed commands stored in memory in location where only DATA and not CODE should be stored. The solution is a flag that indicates that the data is not executable. The counter solution is to inject code with Just In Time compilers, or see ROP below.
+
+The second solution is Address Space Layout Randomisation (ASLR). The previous attack works if I can guess correct return address. The solution is to make guessing the right return address hard. Modern operating systems randomise addresses in memory to make it more difficult to guess specific addresses. The counter-solution is side channel attacks, low entropy vulnerabilities. 
+
+\paragraph{What are the causes of the BoF vulnerability?}
+There is no notion of string length in C, strings are simply terminated by a null character. No info on string length is therefore stored in memory. Many default functions in C do not implement additional controls, programmers needs to implement these on their own. There is also no distinction between executable and read-only sections of memory in older architectures.
+
+ 
