@@ -1,0 +1,24 @@
+\section{Malware}
+\paragraph{What is an evil maid attack?}
+Deploying a rootkit or malware is challenging on modern operating systems. "Evil maid attack" requires the physical access to the device. The scenario is that of a laptop left unsupervised in a hotel room. The laptop will boot from an external drive owned by the attacker, it mounts the internal drive, loads backed MBR on disk. 
+
+\paragraph{What is a worm?}
+A worm is a replicating self-contained program that propagates over the network. For example, shared using email, remote exec or remote login. A warm has phases like a virus, namely: propagation, triggering, execution. During the propagation phase it searches for other systems, it connects to it, and copies itself on that system, from there it repeats. A worm may disguise itself as a system process.
+
+\paragraph{Explain the defence "signature scanners \& heuristics"}
+A signature is a footprint of the malware in memory, if the signature matches with a signature in the DB then it will be detected by your virus scan. This is a purely reactive strategy, the slight change in malware code defeats this detection. The malware may evolve to different strains of the same virus family, different footprint but common characteristics. A heuristic detection happens by partial matching, it tries to detect common characteristics of a virus strain.
+
+\paragraph{What is polymorphic malware?}
+Polymorphic malware uses encryption to obfuscate code. The decryption module is modified at each infection, all samples will therefore have a different footprint in memory. A well-written polymorphic virus has no parts which remain identical between infections. Hence, the file signature checking is useless and heuristics may work if encryption-decryption pair does not vary enough.
+
+\paragraph{Explain the defence against "generic decryption"}
+Each polymorphic malware will look different on disk. But at execution time code will always be the same. However, if detection happens when malware is executed, it will be too late. However, we can use generic decryption, also known as sandboxing. This will make sure that the potential virus is executed on an emulated environment with no actual access to system resources. The malware then decrypts itself, and the signature checking will not work anymore. Sadly, modern malware can prevent execution in emulated or virtual environments via analysis of the execution environment. This way it can prevent analysis by researchers.
+
+\paragraph{What is metamorphic viruses?}
+To avoid being detected by emulation, some viruses rewrite themselves completely each time they are to infect new executables. After execution on emulated environment, signatures won't match anymore. Morphic engines rewrites the code at execution, these are however very large and complex and take up most of the malware code. There are several techniques, namely: NOP writing, changing machine instructions/CPU registers with equivalent ones, adds useless instructions or loops. More complex techniques are also possible, namely logically equivalent code or function reordering.
+
+\paragraph{What is behavioural detection?}
+Behavioural detection addresses issues with metamorphic malware and detection of previously unseen malware. It is based on a set of actions that the malware performs. The basic idea is that the malware behaves differently from legitimate software, namely: which system calls it makes, the interaction with drivers and the system interrupts is causes. It is very hard to enumerate all possible actions, because that would take exponential time. It is however, also hard to correctly identify set of actions that characterise malware. The risk of false positives is higher than for heuristic or signature based.
+
+\paragraph{What is a botnet?}
+A botnet is a virtual network of infected machines under the control of a "bot herder". The machines can perform any kind of action for the bot herder, however prolonged activity requires high resilience against detection. Botnets are managed through a command \& control server under the control of an attacker. The Command \& Control server for a centralised botnet are mostly controlled via IRC or HTTP. The command \& control server is however a single point of failure in this centralised design. This is where P2P comes into play, P2P makes the commands propagate slowly through the network because every malware infection comes with a list of peers to connect to, which are other infected systems.
