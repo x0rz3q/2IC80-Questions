@@ -1,0 +1,18 @@
+\section{Malware Distribution Networks}
+\paragraph{What is a malware Distribution Network?}
+An MDN is a network partially or completely controlled by an attacker that delivers malware to end users that directly or indirectly perform some request toward the MDN. This may happen because of a direct link (e.g. sent through spam or phishing emails), or because of redirection from otherwise legitimate websites that may direct the user toward the MDN.
+
+\paragraph{What is content compromise?}
+An attacker exploits a vulnerability on the domain's server. For example a BoF on HTTP service. The goal is to insert arbitrary content on a webpage, the content is then loaded by every user that requests the compromised webpage.
+
+\paragraph{What is malvertisiment?}
+Malvertisiment exploits this mechanism by relying on existent ad networks to deliver malicious code to a user's browser when visiting websites that have a contract with the ad network.
+
+\paragraph{What is a drive-by download?}
+It is a common infection mechanism employed by attackers. When contacted, remote server delivers content that tries to exploit a local vulnerability on the machine. Typically a buffer overflow against common browsers or browser plugins. If successful, shellcode will call home, downloads malware and executes it.
+
+\paragraph{What is an exploit kit?}
+Exploit kits are websites that serve vulnerability exploits and ultimately malware. It typically features less than 10 exploits, but nowadays it is more command to have 3 to 4 exploits. Exploit kits only work if they receive victim traffic. The underground has services that trade connections, e.g. via malvertising, spam or iframes on legit websites. Attacker "buys" connections from specific users with specific configurations.
+
+\paragraph{What is a packer?}
+Antivirus software usually recognises the signature of the malware in memory. Packers are essentially pieces of software that "wrap" the malware and modify this way the malware's signature. The binary memory imprint of the packed malware changes. The goal is to obfuscate the malware. An attack can send a "fresh" attack with a lower detection rate from anti-virus software.
