@@ -1,0 +1,9 @@
+image: "x0rz3q/latex:latest"
+
+build:
+  script:
+    - latexmk -pdf main.tex
+    - mv main.pdf "2IC80-Questions.pdf"
+  artifacts:
+    paths:
+      - "*.pdf"
