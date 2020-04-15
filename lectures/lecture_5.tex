@@ -61,7 +61,7 @@ Closed|Filtered: same.
 \paragraph{What is a SYN scan?}
 The attacker forges TCP packets with the SYN flag up. It is useful to measure whether the remote system is accepting incoming connections on port x.
 
-There is also a Half-open SYN scan. This means that the attacker will send an RST back after the server's SYNC ACK. This way, the 3-way handshake is never finished and control is not passed to the application layer.
+There is also a Half-open SYN scan. This means that the attacker will send an RST back after the server's SYN ACK. This way, the 3-way handshake is never finished and control is not passed to the application layer.
 
 \paragraph{What is an ACK scan?}
 The attacker forges TCP packets with only the ACK flag up. It is useful to distinguish between stateful and stateless firewalls. A stateless firewall will let the packet go through even if there is no existing connections, the port needs to be open for this. A stateful firewall will drop the ACK packet if it is not associated with a SYN\_RECEIVED state. Therefore, we can conclude that the port is unfiltered when we receive an RST packet back. No response or specific ICMP message means that it is filtered.
