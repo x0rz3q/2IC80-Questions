@@ -3,7 +3,7 @@
 Deploying a rootkit or malware is challenging on modern operating systems. "Evil maid attack" requires the physical access to the device. The scenario is that of a laptop left unsupervised in a hotel room. The laptop will boot from an external drive owned by the attacker, it mounts the internal drive, loads backed MBR on disk. 
 
 \paragraph{What is a worm?}
-A worm is a replicating self-contained program that propagates over the network. For example, shared using email, remote exec or remote login. A warm has phases like a virus, namely: propagation, triggering, execution. During the propagation phase it searches for other systems, it connects to it, and copies itself on that system, from there it repeats. A worm may disguise itself as a system process.
+A worm is a replicating self-contained program that propagates over the network. For example, shared using email, remote exec or remote login. A worm has phases like a virus, namely: propagation, triggering, execution. During the propagation phase it searches for other systems, it connects to it, and copies itself on that system, from there it repeats. A worm may disguise itself as a system process.
 
 \paragraph{Explain the defence "signature scanners \& heuristics"}
 A signature is a footprint of the malware in memory, if the signature matches with a signature in the DB then it will be detected by your virus scan. This is a purely reactive strategy, the slight change in malware code defeats this detection. The malware may evolve to different strains of the same virus family, different footprint but common characteristics. A heuristic detection happens by partial matching, it tries to detect common characteristics of a virus strain.
